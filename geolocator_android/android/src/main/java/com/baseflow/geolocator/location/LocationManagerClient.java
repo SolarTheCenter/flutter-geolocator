@@ -228,7 +228,12 @@ class LocationManagerClient implements LocationClient, LocationListener {
 
     if (provider.trim().isEmpty()) {
       List<String> providers = locationManager.getProviders(true);
-      if (providers.size() > 0) provider = providers.get(0);
+      //if (providers.size() > 0) provider = providers.get(0);
+      if (providers.contains(LocationManager.NETWORK_PROVIDER)) {
+          provider = LocationManager.NETWORK_PROVIDER;
+      } else if (providers.contains(LocationManager.GPS_PROVIDER)) {
+          provider = LocationManager.GPS_PROVIDER;
+      }
     }
 
     return provider;
@@ -237,6 +242,7 @@ class LocationManagerClient implements LocationClient, LocationListener {
   private static float accuracyToFloat(LocationAccuracy accuracy) {
     switch (accuracy) {
       case lowest:
+        return 1500;
       case low:
         return 500;
       case medium:
